@@ -8,9 +8,12 @@ namespace DefaultAvatarGenerator
         {
             string initials = "JD";
 
+            // Get a consistent color based on initials.
             Color userColor = ColorPicker.GetRandomColor(initials);
 
+            // Generate an avatar image with a background pattern.
             string filePath = DefaultAvatarGenerator.GenerateAvatarWithPattern(userColor, initials);
+
             Console.WriteLine($"Avatar generated at: {filePath}");
         }
     }
