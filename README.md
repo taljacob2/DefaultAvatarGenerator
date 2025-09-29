@@ -23,16 +23,16 @@ You can generate avatars using different styles:
 
 ```csharp
 // Clean solid background
-DefaultAvatarGenerator.GenerateAvatar(color, initials);
+DefaultAvatarGenerator.GenerateAvatar(userColor, initials);
 
 // Geometric soft circles
-DefaultAvatarGenerator.GenerateAvatarWithPattern(color, initials);
+DefaultAvatarGenerator.GenerateAvatarWithPattern(userColor, initials);
 
 // Mosaic (pixel block style)
-DefaultAvatarGenerator.GenerateAvatarWithMosaic(color, initials);
+DefaultAvatarGenerator.GenerateAvatarWithMosaic(userColor, initials);
 
 // Trading bars (finance-inspired)
-DefaultAvatarGenerator.GenerateAvatarWithTradingBars(color, initials);
+DefaultAvatarGenerator.GenerateAvatarWithTradingBars(userColor, initials);
 ```
 
 ## Examples
