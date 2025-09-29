@@ -91,7 +91,7 @@ namespace DefaultAvatarGenerator
                 int x = rand.Next(0, edgeLength);
                 int y = rand.Next(0, edgeLength);
 
-                int variation = rand.Next(-30, 30);
+                int variation = rand.Next(-70, 70);
                 var patternColor = Color.FromArgb(
                     40, // very low alpha
                     Clamp(backgroundColor.R + variation),
@@ -175,7 +175,7 @@ namespace DefaultAvatarGenerator
                 int x = i;
                 int y = edgeLength - barHeight;
 
-                int variation = rand.Next(-30, 30);
+                int variation = rand.Next(-70, 70);
                 var barColor = Color.FromArgb(
                     60,
                     Clamp(backgroundColor.R + variation),
