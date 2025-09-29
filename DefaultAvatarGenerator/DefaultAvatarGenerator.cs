@@ -13,6 +13,21 @@ namespace DefaultAvatarGenerator
 {
     public static class DefaultAvatarGenerator
     {
+        private static void DrawCenteredText(Graphics graphics, string? text, int edgeLength)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return;
+
+            float fontSize = edgeLength * 0.4f;
+            using var font = new System.Drawing.Font("Arial", fontSize, FontStyle.Bold, GraphicsUnit.Pixel);
+            using var brush = new SolidBrush(Color.White);
+
+            var textSize = graphics.MeasureString(text, font);
+            var x = (edgeLength - textSize.Width) / 2;
+            var y = (edgeLength - textSize.Height) / 2;
+
+            graphics.DrawString(text, font, brush, new PointF(x, y));
+        }
+
         /// <summary>
         /// Generates a square PNG avatar with a background color and optional centered text.
         /// </summary>
@@ -34,20 +49,7 @@ namespace DefaultAvatarGenerator
             graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             graphics.Clear(backgroundColor);
 
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                // Choose font size proportional to image size
-                float fontSize = edgeLength * 0.4f;
-                using var font = new System.Drawing.Font("Arial", fontSize, FontStyle.Bold, GraphicsUnit.Pixel);
-                using var brush = new SolidBrush(Color.White);
-
-                // Measure text size
-                var textSize = graphics.MeasureString(text, font);
-                var x = (edgeLength - textSize.Width) / 2;
-                var y = (edgeLength - textSize.Height) / 2;
-
-                graphics.DrawString(text, font, brush, new PointF(x, y));
-            }
+            DrawCenteredText(graphics, text, edgeLength);
 
             // Generate unique file name
             string fileName = $"avatar_{Guid.NewGuid()}.png";
@@ -101,18 +103,7 @@ namespace DefaultAvatarGenerator
                 graphics.FillEllipse(brush, x - radius / 2, y - radius / 2, radius, radius);
             }
 
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                float fontSize = edgeLength * 0.4f;
-                using var font = new System.Drawing.Font("Arial", fontSize, FontStyle.Bold, GraphicsUnit.Pixel);
-                using var brush = new SolidBrush(Color.White);
-
-                var textSize = graphics.MeasureString(text, font);
-                var x = (edgeLength - textSize.Width) / 2;
-                var y = (edgeLength - textSize.Height) / 2;
-
-                graphics.DrawString(text, font, brush, new PointF(x, y));
-            }
+            DrawCenteredText(graphics, text, edgeLength);
 
             string fileName = $"avatar_pattern_{Guid.NewGuid()}.png";
             string outputPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
@@ -152,18 +143,7 @@ namespace DefaultAvatarGenerator
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                float fontSize = edgeLength * 0.4f;
-                using var font = new System.Drawing.Font("Arial", fontSize, FontStyle.Bold, GraphicsUnit.Pixel);
-                using var brush = new SolidBrush(Color.White);
-
-                var textSize = graphics.MeasureString(text, font);
-                var x = (edgeLength - textSize.Width) / 2;
-                var y = (edgeLength - textSize.Height) / 2;
-
-                graphics.DrawString(text, font, brush, new PointF(x, y));
-            }
+            DrawCenteredText(graphics, text, edgeLength);
 
             string fileName = $"avatar_mosaic_{Guid.NewGuid()}.png";
             string outputPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
@@ -207,18 +187,7 @@ namespace DefaultAvatarGenerator
                 graphics.FillRectangle(brush, x, y, barWidth, barHeight);
             }
 
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                float fontSize = edgeLength * 0.4f;
-                using var font = new System.Drawing.Font("Arial", fontSize, FontStyle.Bold, GraphicsUnit.Pixel);
-                using var brush = new SolidBrush(Color.White);
-
-                var textSize = graphics.MeasureString(text, font);
-                var x = (edgeLength - textSize.Width) / 2;
-                var y = (edgeLength - textSize.Height) / 2;
-
-                graphics.DrawString(text, font, brush, new PointF(x, y));
-            }
+            DrawCenteredText(graphics, text, edgeLength);
 
             string fileName = $"avatar_tradingbars_{Guid.NewGuid()}.png";
             string outputPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
