@@ -51,7 +51,7 @@ namespace DefaultAvatarGenerator
 
             // Generate unique file name
             string fileName = $"avatar_{Guid.NewGuid()}.png";
-            string outputPath = Path.Combine(Path.GetTempPath(), fileName);
+            string outputPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
 
             bitmap.Save(outputPath, ImageFormat.Png);
 
