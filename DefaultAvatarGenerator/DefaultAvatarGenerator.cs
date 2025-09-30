@@ -1,24 +1,22 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DefaultAvatarGenerator
 {
     public static class DefaultAvatarGenerator
     {
+        /// <summary>
+        /// Draws centered text within a square area.
+        /// </summary>
+        /// <param name="graphics">The graphics context to draw on.</param>
+        /// <param name="text">The text to be drawn. Ignored if null or whitespace.</param>
+        /// <param name="edgeLength">The width and height of the square area.</param>
         private static void DrawCenteredText(Graphics graphics, string? text, int edgeLength)
         {
             if (string.IsNullOrWhiteSpace(text)) return;
 
             float fontSize = edgeLength * 0.4f;
-            using var font = new System.Drawing.Font("Arial", fontSize, FontStyle.Bold, GraphicsUnit.Pixel);
+            using var font = new Font("Arial", fontSize, FontStyle.Bold, GraphicsUnit.Pixel);
             using var brush = new SolidBrush(Color.White);
 
             var textSize = graphics.MeasureString(text, font);
@@ -29,29 +27,27 @@ namespace DefaultAvatarGenerator
         }
 
         /// <summary>
-        /// Generates a square PNG avatar with a background color and optional centered text.
+        /// Generates a square PNG avatar with a solid background color and optional centered text.
         /// </summary>
-        /// <param name="backgroundColor">The background color of the image (System.Drawing.Color).</param>
-        /// <param name="text">Optional text to center on the image. Defaults to null.</param>
-        /// <param name="edgeLength">Optional edge length in pixels. Defaults to 500.</param>
-        /// <returns>Full path to the saved PNG file.</returns>
+        /// <param name="backgroundColor">The background color of the avatar.</param>
+        /// <param name="text">Optional text to display in the center of the image. Defaults to null.</param>
+        /// <param name="edgeLength">Optional size of the avatar in pixels (width and height). Defaults to 500.</param>
+        /// <returns>Full file path to the saved PNG file.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when edgeLength is less than or equal to 0.</exception>
         public static string GenerateAvatar(Color backgroundColor, string? text = null, int edgeLength = 500)
         {
-            // Sanity check
             if (edgeLength <= 0)
                 throw new ArgumentOutOfRangeException(nameof(edgeLength), "Edge length must be greater than zero.");
 
             using var bitmap = new Bitmap(edgeLength, edgeLength);
             using var graphics = Graphics.FromImage(bitmap);
 
-            // High quality settings
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             graphics.Clear(backgroundColor);
 
             DrawCenteredText(graphics, text, edgeLength);
 
-            // Generate unique file name
             string fileName = $"avatar_{Guid.NewGuid()}.png";
             string outputPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
 
@@ -61,12 +57,20 @@ namespace DefaultAvatarGenerator
         }
 
         /// <summary>
-        /// Helper to keep RGB values in range
+        /// Clamps an integer value between 0 and 255 to ensure valid RGB color values.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">The value to clamp.</param>
+        /// <returns>A value between 0 and 255.</returns>
         private static int Clamp(int value) => Math.Max(0, Math.Min(255, value));
 
+        /// <summary>
+        /// Generates a square PNG avatar with a background color, a soft circular pattern overlay, and optional centered text.
+        /// </summary>
+        /// <param name="backgroundColor">The background color of the avatar.</param>
+        /// <param name="text">Optional text to display in the center of the image. Defaults to null.</param>
+        /// <param name="edgeLength">Optional size of the avatar in pixels (width and height). Defaults to 500.</param>
+        /// <returns>Full file path to the saved PNG file.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when edgeLength is less than or equal to 0.</exception>
         public static string GenerateAvatarWithPattern(Color backgroundColor, string? text = null, int edgeLength = 500)
         {
             if (edgeLength <= 0)
@@ -75,15 +79,13 @@ namespace DefaultAvatarGenerator
             using var bitmap = new Bitmap(edgeLength, edgeLength);
             using var graphics = Graphics.FromImage(bitmap);
 
-            // High quality settings
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
 
-            // Fill background
             graphics.Clear(backgroundColor);
 
             var rand = new Random();
-            int patternCount = 50; // Adjust for density
+            int patternCount = 50;
 
             for (int i = 0; i < patternCount; i++)
             {
@@ -93,7 +95,7 @@ namespace DefaultAvatarGenerator
 
                 int variation = rand.Next(-70, 70);
                 var patternColor = Color.FromArgb(
-                    40, // very low alpha
+                    40,
                     Clamp(backgroundColor.R + variation),
                     Clamp(backgroundColor.G + variation),
                     Clamp(backgroundColor.B + variation)
@@ -113,6 +115,14 @@ namespace DefaultAvatarGenerator
             return outputPath;
         }
 
+        /// <summary>
+        /// Generates a square PNG avatar with a mosaic-style tiled background and optional centered text.
+        /// </summary>
+        /// <param name="backgroundColor">The base color of the avatar.</param>
+        /// <param name="text">Optional text to display in the center of the image. Defaults to null.</param>
+        /// <param name="edgeLength">Optional size of the avatar in pixels (width and height). Defaults to 500.</param>
+        /// <returns>Full file path to the saved PNG file.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when edgeLength is less than or equal to 0.</exception>
         public static string GenerateAvatarWithMosaic(Color backgroundColor, string? text = null, int edgeLength = 500)
         {
             if (edgeLength <= 0)
@@ -152,6 +162,14 @@ namespace DefaultAvatarGenerator
             return outputPath;
         }
 
+        /// <summary>
+        /// Generates a square PNG avatar with vertical bar chart-like elements over a background and optional centered text.
+        /// </summary>
+        /// <param name="backgroundColor">The base color of the avatar.</param>
+        /// <param name="text">Optional text to display in the center of the image. Defaults to null.</param>
+        /// <param name="edgeLength">Optional size of the avatar in pixels (width and height). Defaults to 500.</param>
+        /// <returns>Full file path to the saved PNG file.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when edgeLength is less than or equal to 0.</exception>
         public static string GenerateAvatarWithTradingBars(Color backgroundColor, string? text = null, int edgeLength = 500)
         {
             if (edgeLength <= 0)
@@ -171,7 +189,7 @@ namespace DefaultAvatarGenerator
 
             for (int i = 0; i < edgeLength; i += spacing)
             {
-                int barHeight = rand.Next(edgeLength / 4, edgeLength / 1); // Random height
+                int barHeight = rand.Next(edgeLength / 4, edgeLength); // Random height
                 int x = i;
                 int y = edgeLength - barHeight;
 
