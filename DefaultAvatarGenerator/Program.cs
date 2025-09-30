@@ -11,7 +11,7 @@ namespace DefaultAvatarGenerator
             // Get a consistent color based on initials.
             Color userColor = ColorPicker.GetRandomColor(initials);
 
-            // Generate an avatar image with a background pattern.
+            // Generate an avatar image composed of background color, and centered text.
             string filePath = DefaultAvatarGenerator.GenerateAvatarWithPattern(userColor, initials);
 
             Console.WriteLine($"Avatar generated at: {filePath}");
